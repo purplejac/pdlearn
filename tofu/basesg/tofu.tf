@@ -1,5 +1,5 @@
 terraform {
   backend "local" {
-    path = "/Users/nebakke/tofu/tofu-basesg.tfstate"
+    path = pathexpand("~/tofu/tofu-basesg.tfstate")
   }
 }

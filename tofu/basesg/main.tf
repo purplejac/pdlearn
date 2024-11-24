@@ -1,6 +1,10 @@
+#
+# Create baseline security group, allowing all access out from the hosts
+# and allowing incoming SSH/RDP and WinRM (where relevant)
+# 
 resource "aws_security_group" "baseline-sg" {
   name        = "${var.prefix}-baseline-tf-sg"
-  description = "Rasmus Hald Terraform baseline SG"
+  description = "Rasmus Hald Tofu baseline SG"
 
   egress {
     description = "Outbound Access"

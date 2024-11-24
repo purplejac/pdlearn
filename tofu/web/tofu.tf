@@ -18,6 +18,6 @@ terraform {
     }
   }
   backend "local" {
-    path = "/Users/nebakke/tofu/tofu-web.tfstate"
+    path = pathexpand("~/tofu/tofu-basesg.tfstate")
   }
 }
