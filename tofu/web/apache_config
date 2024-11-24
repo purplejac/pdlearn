@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+        ServerAdmin admin@qloapps.com
+        DocumentRoot /var/www/html/qloapps
+        ServerName ras-web-01.hald.id.au
+        ServerAlias www.yourdomain.com
+<Directory /var/www/html/qloapps/>
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+</Directory>
+        ErrorLog /var/log/httpd/error.log
+        CustomLog /var/log/httpd/access.log combined
+</VirtualHost>
