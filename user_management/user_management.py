@@ -10,7 +10,7 @@
 
 import getopt, json, requests, sys, yaml
 
-config_file = "pd_config.yaml"
+config_file = "../pd_config.yaml"
 user_objects = []
 
 #

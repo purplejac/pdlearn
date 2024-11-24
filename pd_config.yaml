@@ -1,5 +1,5 @@
 ---
-api_token: 'u+7JxEShu1orxxhygH9w'
+api_token: '<PD_API_KEY>'
 pd_id_uri: 'https://identity.pagerduty.com/oauth'
 pd_team_uri: 'https://api.pagerduty.com/teams'
 
