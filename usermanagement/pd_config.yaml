@@ -1,0 +1,639 @@
+---
+api_token: 'u+7JxEShu1orxxhygH9w'
+pd_id_uri: 'https://identity.pagerduty.com/oauth'
+pd_team_uri: 'https://api.pagerduty.com/teams'
+
+schedules:
+  - schedule:
+      description: 'Rolling roster for major incident management'
+      name: 'Major Incident Management Schedule'
+      schedule_layers:
+      - name: 'Mondays'
+        restrictions:
+        - duration_seconds: 86400
+          start_day_of_week: 1
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+      - name: 'Tuesdays'
+        restrictions:
+        - duration_seconds: 86400
+          start_day_of_week: 2
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+      - name: 'Wednesdays'
+        restrictions:
+        - duration_seconds: 86400
+          start_day_of_week: 3
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+      - name: 'Thursdays'
+        restrictions:
+        - duration_seconds: 86400
+          start_day_of_week: 4
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+      - name: 'Fridays'
+        restrictions:
+        - duration_seconds: 86400
+          start_day_of_week: 5
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+      - name: 'Weekends'
+        restrictions:
+        - duration_seconds: 172800
+          start_day_of_week: 6
+          start_time_of_day: '07:30:00'
+          type: 'weekly_restriction'
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-18T07:30:00+11:00'
+        users:
+        - user:
+            id: 'PUIAMEY'
+            type: 'user_reference'
+        - user:
+            id: 'P9LWFNG'
+            type: 'user_reference'
+        - user:
+            id: 'PYUM0TL'
+            type: 'user_reference'
+      time_zone: 'Australia/Sydney'
+      type: 'schedule'
+  - schedule:
+      description: 'Guest relations team roster 1 (Melbourne)'
+      name: 'Melbourne guest relations, front-desk roster 1'
+      schedule_layers:
+      - end: null
+        name: Shift 1
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-22T15:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+      - end: null
+        name: Shift 2
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-15T23:30:00+11:00'
+        start: '2024-11-22T23:30:00+11:00'
+        users:
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+      - end: null
+        name: Shift 3
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+      - end: null
+        name: Weekend Shift 1
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 6
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 7
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T19:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+      - end: null
+        id: P1CF3Z4
+        name: Weekend Shift 2
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 6
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 7
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+      - end: null
+        name: Weekend Shift 3
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 6
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 7
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-22T20:00:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+      teams:
+        - id: PYZ1PXO
+          type: team_reference
+      time_zone: Australia/Sydney
+      type: schedule
+  - schedule:
+      description: 'Guest relations team roster 2 (Melbourne)'
+      name: 'Melbourne guest relations, front-desk roster 2'
+      schedule_layers:
+      - end: null
+        name: Shift 1
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: 07:30:00
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-22T15:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+      - end: null
+        name: Shift 2
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: '15:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-15T23:30:00+11:00'
+        start: '2024-11-22T23:30:00+11:00'
+        users:
+        - user:
+            id: PYDNOOD
+            type: user_reference
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+      - end: null
+        name: Shift 3
+        rendered_coverage_percentage: null
+        rendered_schedule_entries: []
+        restrictions:
+        - duration_seconds: 28800
+          start_day_of_week: 1
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 2
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 3
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 4
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        - duration_seconds: 28800
+          start_day_of_week: 5
+          start_time_of_day: '23:30:00'
+          type: weekly_restriction
+        rotation_turn_length_seconds: 604800
+        rotation_virtual_start: '2024-11-18T07:30:00+11:00'
+        start: '2024-11-22T20:32:48+11:00'
+        users:
+        - user:
+            id: PV3MNZQ
+            type: user_reference
+        - user:
+            id: PVFUTBS
+            type: user_reference
+        - user:
+            id: PS66SM2
+            type: user_reference
+        - user:
+            id: POWIS9C
+            type: user_reference
+        - user:
+            id: P7KXRXP
+            type: user_reference
+        - user:
+            id: P4O9QHM
+            type: user_reference
+        - user:
+            id: P0BLQ5Z
+            type: user_reference
+        - user:
+            id: PFLJPDT
+            type: user_reference
+        - user:
+            id: PJY7QSG
+            type: user_reference
+        - user:
+            id: PYDNOOD
+            type: user_reference
+      teams:
+        - id: PYZ1PXO
+          type: team_reference
+      time_zone: Australia/Sydney
+      type: schedule
+
