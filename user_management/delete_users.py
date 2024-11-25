@@ -6,6 +6,8 @@
 #
 import requests
 import json
+import yaml
+config_file = "../pd_config.yaml"
 
 #
 # read_config function
