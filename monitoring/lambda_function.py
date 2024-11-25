@@ -20,9 +20,9 @@ def lambda_handler(event, context):
     #
     # Open text API keys are not ideal, but functional for the purpose of this demo
     #
-    qlo_api_key = <QloApps API KEY>
+    qlo_api_key = <QLO_API_KEY>
     encoded_qlo_key = base64.b64encode(f"{qlo_api_key}:".encode("utf-8")).decode("utf-8")
-    pd_routing_key = <PAGERDUTY ROUTING KEY>
+    pd_routing_key = <PAGERDUTY_ROUTING_KEY>
     pd_api_token = <PAGERDUTY API TOKEN>
 
     #
@@ -42,6 +42,7 @@ def lambda_handler(event, context):
     pd_incident_q_endpoint = f"{pd_incident_endpoint}?statuses[]=triggered&statuses[]=acknowledged"
 
     qlo_notices = []
+    connect_ok = True
 
 
     timestamp = datetime.now().astimezone().isoformat()
@@ -97,7 +98,7 @@ def lambda_handler(event, context):
     if len(incident_json.content) > 0:
         # Get OBS-related incidents
         for incident in json.loads(incident_json.content)["incidents"]:
-            # If the incident is matched to the OBS Backend service, store it for checking
+            # If the incident is matched to the OBS Backend service, store if for checking
             if incident["service"]["id"] == 'PYVCMOF':
                 pd_alert_query = f"{incident['html_url']}/alerts"
                 alerts_response = requests.get(pd_alert_query, headers=headers, json={"limit": "60"})
@@ -188,7 +189,11 @@ def lambda_handler(event, context):
                     "component": "QloApps-Web",
                     "location": "Online",
                 }
+                #
+                # If we're here, the API hit failed, so connectivity issues should be raised
+                #
             )
+            connect_ok = False
         except requests.exceptions.RequestException as err:
             qlo_notices.append(
                 {
@@ -201,13 +206,17 @@ def lambda_handler(event, context):
                     "component": "QloApps-Web",
                     "location": "Online",
                 }
+                #
+                # If we're here, the API hit failed, so connectivity issues should be raised
+                #
             )
+            connect_ok = False
 
         #
         # If no exceptions were hit during the checking, the API is responding and not timing out,
         # so checking if there are any outstanding incidents against the actual service availability.
         #
-        if "Online" in alert_list:
+        if "Online" in alert_list and connect_ok:
             for alert_info in alert_list["Online"]:
                 qlo_notices.append(
                     {
