@@ -20,9 +20,10 @@ def lambda_handler(event, context):
     #
     # Open text API keys are not ideal, but functional for the purpose of this demo
     #
-    qlo_api_key = "<API KEY>"
+    qlo_api_key = <QloApps API KEY>
     encoded_qlo_key = base64.b64encode(f"{qlo_api_key}:".encode("utf-8")).decode("utf-8")
-    pd_routing_key = "R028C3ZH6G61XLX5GRHBE9KYX1FV1JVE"
+    pd_routing_key = <PAGERDUTY ROUTING KEY>
+    pd_api_token = <PAGERDUTY API TOKEN>
 
     #
     # Setting up Qlo endpoint and Pagerduty alerting endpoint
@@ -30,9 +31,18 @@ def lambda_handler(event, context):
     #
     api_server = "http://pd-web-01.hald.id.au"
     api_endpoint = f"{api_server}/api"
-    pd_endpoint = "https://events.pagerduty.com/v2/enqueue"
+    pd_event_server = "https://events.pagerduty.com"
+    pd_event_endpoint = f"{pd_event_server}/v2/enqueue"
 
-    qlo_error = {}
+    #
+    # Set up PD Incident query endpoint
+    #
+    pd_api_server = "https://api.pagerduty.com"
+    pd_incident_endpoint = f"{pd_api_server}/incidents"
+    pd_incident_q_endpoint = f"{pd_incident_endpoint}?statuses[]=triggered&statuses[]=acknowledged"
+
+    qlo_notices = []
+
 
     timestamp = datetime.now().astimezone().isoformat()
 
@@ -65,6 +75,50 @@ def lambda_handler(event, context):
         "Content-Type": "application/json",
     }
 
+    headers = {
+        "Accept": "application/json",
+        "Authorization": f"Token token={pd_api_token}",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        incident_json = requests.get(pd_incident_q_endpoint, headers=headers, json={"limit": "60"})
+    except Exception as err:
+        return {
+            "statusCode": 500,
+            "body": json.dumps("Failure in incident retrieval")
+        }
+    
+    alert_list = {}
+
+    #
+    # Query the PagerDuty incidents endpoint to get a list of 'live' incidents
+    #
+    if len(incident_json.content) > 0:
+        # Get OBS-related incidents
+        for incident in json.loads(incident_json.content)["incidents"]:
+            # If the incident is matched to the OBS Backend service, store it for checking
+            if incident["service"]["id"] == 'PYVCMOF':
+                pd_alert_query = f"{incident['html_url']}/alerts"
+                alerts_response = requests.get(pd_alert_query, headers=headers, json={"limit": "60"})
+                alerts = json.loads(alerts_response.content)
+
+                for alert in alerts["alerts"]:
+                    if "Location" in alert["body"]["details"] and "dedup_key" in alert["body"]["cef_details"]:
+                        alert_item = {
+                            "summary": alert["summary"],
+                            "dedup_key": alert["body"]["cef_details"]["dedup_key"],
+                            "severity": alert["severity"],
+                            "priority": alert["body"]["details"]["Priority"],
+                            "group": alert["body"]["cef_details"]["service_group"],
+                            "location": alert["body"]["details"]["Location"],
+                        }
+
+                        if alert["body"]["details"]["Location"] not in alert_list:
+                            alert_list[alert["body"]["details"]["Location"]] = [alert_item]
+                        else:
+                            alert_list[alert["body"]["details"]["Location"]].push(alert_item)
+
     #
     # In an ideal/full-blown solution, much like the API keys, this information would be retrieved externally,
     # for the keys, perhaps through something like Vault or AWS Secrets Manager.
@@ -84,71 +138,116 @@ def lambda_handler(event, context):
         room_count = hotel_data["room_count"]
 
         try:
-            response = requests.get(f"http://{api_endpoint}/hotels/{id}?output_format=JSON", headers=qlo_headers, timeout=5)
+            response = requests.get(f"{api_endpoint}/hotels/{id}?output_format=JSON", headers=qlo_headers, timeout=5)
             allocated_room_types = json.loads(response.content)["hotel"]["associations"]["room_types"]
-
 
             # If the number of rooms does not match what was expected, raise an alert.
             # Opting 'only' for Warning level, as the hotel will still be able to do business, it is simply that the OBS 
             # won't appropriately reflect the number of room types available, which should be resolved.
-            
+
             if len(allocated_room_types) != room_count:
-                qlo_error = {
-                    "message": f"Room count for {hotel_name} has changed from the expected target of {room_count}. Current count: {len(allocated_room_types)}",
-                    "dedup_key": f"{hotel_name}-room_count",
-                    "severity": "warning",
-                    "priority": "P2",
-                    "group": "OBS Content",
-                    "component": "QloApps-Web",
-                    "location": hotel_name,
-                }
+                qlo_notices.append(
+                    {
+                        "event_action": "trigger",
+                        "message": f"Room count for {hotel_name} has changed from the expected target of {room_count}. Current count: {len(allocated_room_types)}",
+                        "dedup_key": f"{hotel_name}-room_count",
+                        "severity": "warning",
+                        "priority": "P2",
+                        "group": "OBS Content",
+                        "component": "QloApps-Web",
+                        "location": hotel_name,
+                    }
+                )
+            #
+            # If there is a live incident against the current check, which just succeeded, setup to send a resolution alert
+            #
+            elif hotel_name in alert_list:
+                for alert_info in alert_list[hotel_name]:
+                    qlo_notices.append(
+                        {
+                            "event_action": "resolve",
+                            "message": alert_info["summary"],
+                            "dedup_key": alert_info["dedup_key"],
+                            "severity": alert_info["severity"],
+                            "priority": alert_info["priority"],
+                            "group": alert_info["group"],
+                            "component": "QloApps-Web",
+                            "location": hotel_name,
+                        }
+                    )
                 
         except requests.exceptions.Timeout:
-            qlo_error = {
-                "message": "OBS API Query timed out",
-                "dedup_key": "OBSAPI-QueryError",
-                "severity": "error",
-                "priority": "P3",
-                "group": "OBS API",
-                "component": "PGAM100",
-                "location": "Online",
-            }
+            qlo_notices.append(
+                {
+                    "event_action": "trigger",
+                    "message": "OBS API Query timed out",
+                    "dedup_key": "OBSAPI-QueryError",
+                    "severity": "error",
+                    "priority": "P3",
+                    "group": "OBS API",
+                    "component": "QloApps-Web",
+                    "location": "Online",
+                }
+            )
         except requests.exceptions.RequestException as err:
-            qlo_error = {
-                "message": f"An error occurred when querying OBS: {err}",
-                "dedup_key": "OBSAPI-QueryError",
-                "severity": "error",
-                "priority": "P3",
-                "group": "OBS API",
-                "component": "PGAM100",
-                "location": "Online",
-            }
+            qlo_notices.append(
+                {
+                    "event_action": "trigger",
+                    "message": f"An error occurred when querying OBS: {err}",
+                    "dedup_key": "OBSAPI-QueryError",
+                    "severity": "error",
+                    "priority": "P3",
+                    "group": "OBS API",
+                    "component": "QloApps-Web",
+                    "location": "Online",
+                }
+            )
 
         #
-        # If qlo_error has been populated, an error has occurred somewhere and an alert should be logged.
+        # If no exceptions were hit during the checking, the API is responding and not timing out,
+        # so checking if there are any outstanding incidents against the actual service availability.
         #
-        if len(qlo_error) > 0:
-            alert_payload = { 
-                "routing_key": pd_routing_key,
-                "event_action": "trigger",
-                "dedup_key": qlo_error["dedup_key"],
-                "payload": {
-                    "summary": qlo_error["message"],
-                    "source": api_server,
-                    "severity": qlo_error["severity"],
-                    "component": qlo_error["component"],
-                    "group": qlo_error["group"],
-                    "custom_details": {"Priority": qlo_error["priority"], "Location": qlo_error["location"]},
-                }
-            }
+        if "Online" in alert_list:
+            for alert_info in alert_list["Online"]:
+                qlo_notices.append(
+                    {
+                        "event_action": "resolve",
+                        "message": alert_info["summary"],
+                        "dedup_key": alert_info["dedup_key"],
+                        "severity": alert_info["severity"],
+                        "priority": alert_info["priority"],
+                        "group": alert_info["group"],
+                        "component": "QloApps-Web",
+                        "location": hotel_name,
+                    }
+                )    
 
-            try:
-                response = requests.post(pd_endpoint, headers=pd_headers, data=json.dumps(alert_payload))
-            except Exception as err:
-                return {
-                    "statusCode": 500,
-                    "body": json.dumps(err)
+        #
+        # If qlo_notices has been populated, an alert trigger or resolution should be logged.
+        #
+        if len(qlo_notices) > 0:
+            for alert in qlo_notices:
+                alert_payload = { 
+                    "routing_key": pd_routing_key,
+                    "event_action": alert["event_action"],
+                    "dedup_key": alert["dedup_key"],
+                    "payload": {
+                        "summary": alert["message"],
+                        "source": api_server,
+                        "severity": alert["severity"],
+                        "component": alert["component"],
+                        "group": alert["group"],
+                        "custom_details": {"Priority": alert["priority"], "Location": alert["location"]},
+                    }
                 }
+
+                try:
+                    response = requests.post(pd_event_endpoint, headers=pd_headers, data=json.dumps(alert_payload))
+                except Exception as err:
+                    return {
+                        "statusCode": 500,
+                        "body": json.dumps("Failure in PagerDuty ticket submission")
+                    }
             
     return {
         "statusCode": 200,
