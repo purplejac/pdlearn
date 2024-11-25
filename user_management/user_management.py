@@ -11,7 +11,6 @@
 import getopt, json, requests, sys, yaml
 
 config_file = "../pd_config.yaml"
-user_objects = []
 
 #
 # add_teams function
@@ -38,11 +37,10 @@ def add_teams(team_list):
             except Exception as err:
                 print(f"An error was encountered when trying to add a team. Team: {team_name}, Error: {err}")
 
-            if response:
-                if response.status_code == 201:
-                    team_map['team_name'] = json.loads(response.text)["team"]["id"]
-                else:
-                    print(f"Something went wrong: {response.text}")
+            if response.status_code == 201:
+                team_map['team_name'] = json.loads(response.text)["team"]["id"]
+            else:
+                print(f"Something went wrong: {response.text}")
 
     return(team_map)
 
@@ -72,6 +70,7 @@ def add_teams(team_list):
 #
 def add_users(user_info, team_map):
     pd_user_url = "https://api.pagerduty.com/users"
+    user_objects = []
 
     current_user_objects = requests.get(pd_user_url, headers=headers, json={"limit": "60"})
     user_objects = json.loads(current_user_objects.content.decode())['users']
@@ -87,22 +86,21 @@ def add_users(user_info, team_map):
             except Exception as err:
                 print(f"An error was encountered when creating the user {user}, Error: {err}")
 
-            if response:
-                if response.status_code == 201:
-                    uid = json.loads(response.text)["user"]["id"]
+            if response.status_code == 201:
+                uid = json.loads(response.text)["user"]["id"]
 
-                    for team in user_teams:
-                        team_id = team_map[team]
-                        try:
-                            team_update_response = requests.put(f"{pd_team_uri}/{team_id}/users/{uid}", headers=headers)
-                        except Exception as err:
-                            print(err)
-                            print(f"Could not add user {user} to team {team}")
+                for team in user_teams:
+                    team_id = team_map[team]
+                    try:
+                        team_update_response = requests.put(f"{pd_team_uri}/{team_id}/users/{uid}", headers=headers)
+                    except Exception as err:
+                        print(err)
+                        print(f"Could not add user {user} to team {team}")
 
-                        if team_update_response and team_update_response.status_code != 204:
-                            print(team_update_response)
-                else:
-                    print(f"Something went wrong when adding user {user}: {response.text}")
+                    if team_update_response and team_update_response.status_code != 204:
+                        print(team_update_response)
+            else:
+                print(f"Something went wrong when adding user {user}: {response.text}")
 
 #
 # generate_user function
@@ -111,6 +109,8 @@ def add_users(user_info, team_map):
 # Takes no parameters but returns a list of user objects, as consumed by the add_users function.
 #
 def generate_users():
+    user_objects = []
+
     for user_number in range(1,51):
         user_name = f"User {user_number}"
         user_email = f"{user_name.lower().replace(" ",".")}@test.test"
@@ -250,6 +250,8 @@ headers = {
         "Content-Type": "application/json"
 }
 
+user_obj_list = []
+
 #
 # If team 'generation' is required, add the default set of teams
 #
@@ -278,9 +280,9 @@ team_map = add_teams(teams)
 # If generic user account generation is required, call generate_users to do so
 #
 if gen_users:
-    user_objects = generate_users()
+    user_obj_list = generate_users()
 else:
-    user_objects = config_dict['users']
+    user_obj_list = config_dict['users']
 
-add_users(user_objects, team_map)
+add_users(user_obj_list, team_map)
 
