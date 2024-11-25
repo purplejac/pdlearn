@@ -1,3 +1,6 @@
+#
+# Set default DNS zone id for cloudflare
+#
 variable "dns_zone_id" {
   description = "DNS Zone ID"
   type        = string

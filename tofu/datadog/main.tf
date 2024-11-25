@@ -1,3 +1,9 @@
+#
+# Configure DataDog/AWS integrations
+# Creating the IAM policies for the role switch and data exports
+#
+
+# Setup to allow the assume role for the datadog profile
 data "aws_iam_policy_document" "datadog_aws_integration_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -17,6 +23,7 @@ data "aws_iam_policy_document" "datadog_aws_integration_assume_role" {
   }
 }
 
+# build the aws permission set
 data "aws_iam_policy_document" "datadog_aws_integration" {
   statement {
     actions = [
@@ -126,27 +133,33 @@ data "aws_iam_policy_document" "datadog_aws_integration" {
   }
 }
 
+# Establish the IAM DD Integration policy
 resource "aws_iam_policy" "datadog_aws_integration" {
   name   = "DatadogAWSIntegrationPolicy"
   policy = data.aws_iam_policy_document.datadog_aws_integration.json
 }
 
+# Setup the role for DataDog to utilise
 resource "aws_iam_role" "datadog_aws_integration" {
   name               = "DatadogAWSIntegrationRole"
   description        = "Role for Datadog AWS Integration"
   assume_role_policy = data.aws_iam_policy_document.datadog_aws_integration_assume_role.json
 }
 
+# Connect the new policy to the newly created role
 resource "aws_iam_role_policy_attachment" "datadog_aws_integration" {
   role       = aws_iam_role.datadog_aws_integration.name
   policy_arn = aws_iam_policy.datadog_aws_integration.arn
 }
 
+# Connect the AWS SecurityAudit policy for DataDog to report on compliance
 resource "aws_iam_role_policy_attachment" "datadog_aws_integration_security_audit" {
   role       = aws_iam_role.datadog_aws_integration.name
   policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
 }
 
+#
+# Setup the integration
 resource "datadog_integration_aws" "sandbox" {
   account_id = "724772066194"
   role_name  = "DatadogAWSIntegrationRole"

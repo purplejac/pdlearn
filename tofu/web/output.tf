@@ -1,6 +1,8 @@
+#
+# Setup outputs of connected security groups, nodename(s) and the private IP for integration with other security groups
+#
 output "security_groups" {
   description = "Mapped Security Groups"
-  #  value = data.tofu_remote_state.basesg.outputs.sg-name
   value = local.sg
 }
 output "nodenames" {

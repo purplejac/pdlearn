@@ -12,6 +12,7 @@ variable "aws_profile" {
   default     = "default"
 }
 
+# Prefix - used for naming resources for easier reference
 variable "prefix" {
   description = "Naming prefix to use for builds etc."
   type        = string

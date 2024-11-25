@@ -1,3 +1,7 @@
+#
+# Set region and profile according to the defined variables
+# to use as shared data across the codeset.
+#
 output "aws_region" {
   description = "The AWS region in use."
   value       = var.aws_region

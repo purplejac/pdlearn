@@ -1,12 +1,13 @@
+#
+# Setup terraform required_providers and configure the backend to export tfstate information
+#
 terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      #      version = "~> 4.16"
     }
     external = {
       source = "hashicorp/external"
-      #      version = "~> 2.2.2"
     }
     cloudflare = {
       source = "cloudflare/cloudflare"
@@ -14,7 +15,6 @@ terraform {
     }
     vault = {
       source = "hashicorp/vault"
-      #version = "3.6.0"
     }
   }
   backend "local" {

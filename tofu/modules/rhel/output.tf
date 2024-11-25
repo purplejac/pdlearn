@@ -1,3 +1,6 @@
+#
+# Provide accessible information about the attached security groups, the nodename, and public/private IPs attached to the EC2
+#
 output "security_groups" {
   description = "Mapped Security Groups"
   value = local.sg

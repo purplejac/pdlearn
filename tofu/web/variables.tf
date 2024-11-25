@@ -1,11 +1,8 @@
+#
+# Build a set of variables for use with new node builds
 variable "ami" {
   description = "AMI ID"
   type        = string
-  #default     = "ami-0c470b32d41481ad6"
-  #default = "ami-0df71cd6f9c048a63"
-  #default = "ami-08e0054de87d9d01a" # Rocky 9
-  #default = "ami-001eae8c9920b7dab" # RHEL-9.5
-  #default = "ami-00902d02d7a700776" # Debian 12
   default = "ami-040e71e7b8391cae4" # Ubuntu 22.04
 }
 

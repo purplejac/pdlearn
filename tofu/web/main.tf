@@ -1,3 +1,10 @@
+#
+# Primary EC2 instance setup
+#
+
+#
+# Build the web security group to allow HTTP(S) access to the webserver
+#
 resource "aws_security_group" "web-sg" {
   name        = "${var.prefix}-web-tf-sg"
   description = "Rasmus Hald Terraform web SG"
@@ -23,6 +30,9 @@ resource "aws_security_group" "web-sg" {
   tags = { Name = "${var.prefix}-web-tf-sg" }
 }
 
+#
+# Call out to the clientnode builder to build the EC2 and connect the security groups and volumes
+#
 module "clientnode" {
   source = "../modules/rhel"
 

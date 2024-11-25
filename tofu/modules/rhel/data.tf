@@ -1,3 +1,6 @@
+#
+# Setup access to the base security group data and cloudflare vault secrets 
+#
 data "terraform_remote_state" "basesg" {
   backend = "local"
 
