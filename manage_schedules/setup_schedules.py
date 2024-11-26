@@ -19,7 +19,7 @@ def read_config(config):
 #
 # Set the config flle and read it, ready for use
 #
-config_file = "pd_config.yaml"
+config_file = "../pd_config.yaml"
 config_dict = read_config(config_file)
 
 #
@@ -45,6 +45,7 @@ with open(config_file) as fh:
 #
 for schedule in config_dict["schedules"]:
     try:
+        print(schedule_endpoint)
         response = requests.post(schedule_endpoint, headers=headers, json=schedule)
     except Exception as err:
         print(f"An error was encountered when trying to add a schedule. Schedule: {schedule['schedule']['name']} Error: {err}")

@@ -121,6 +121,7 @@ def generate_users():
 
         if user_number == 1:
             user_job_title = "CEO"
+            user_role = "read_only_user"
         elif user_number == 2:
             user_job_title = "CIO"
             user_role = "admin"
@@ -131,6 +132,7 @@ def generate_users():
             user_teams = ["central_tech", "business_admin"]
         elif user_number < 7:
             user_job_title = "Business Management"
+            user_role = "read_only_user"
         elif user_number < 12:
             user_job_title = "OPS Engineer"
             user_role = "limited_user"

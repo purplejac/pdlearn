@@ -48,4 +48,5 @@ for user_name in user_list:
     for user_object in user_objects:
         if  user_name == user_object["name"]:
             uid = user_object["id"]
+            print(f"Deleting account for {user_name}")
             requests.delete(f"{pd_user_url}/{uid}", headers=headers)
